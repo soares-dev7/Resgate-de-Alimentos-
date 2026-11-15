@@ -10,7 +10,7 @@ import { useApp } from "@/lib/store";
 import type { Coleta } from "@/lib/types";
 
 export default function ImpactoPage() {
-  const { doacoes } = useApp();
+  const { doacoes, resetarDemo } = useApp();
 
   // Histórico mockado + coletas confirmadas nesta sessão (tela /rota).
   const coletas = useMemo<Coleta[]>(() => {
@@ -36,7 +36,11 @@ export default function ImpactoPage() {
 
   return (
     <>
-      <PageHeader titulo="Painel de impacto" descricao="Quanto alimento deixou de ir para o lixo e virou refeição. Dados de demonstração." />
+      <PageHeader titulo="Painel de impacto" descricao="Quanto alimento deixou de ir para o lixo e virou refeição. Dados de demonstração.">
+        <button onClick={resetarDemo} className="rounded-lg border border-stone-300 px-3 py-2 text-sm text-stone-600 hover:bg-stone-100">
+          Reiniciar dados da demo
+        </button>
+      </PageHeader>
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         <Destaque rotulo="Alimento resgatado" valor={fmtKg(total.kg)} />

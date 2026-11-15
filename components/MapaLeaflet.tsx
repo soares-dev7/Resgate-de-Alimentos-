@@ -29,6 +29,11 @@ export interface MapaProps {
 
 const CENTRO_SP: [number, number] = [-23.5505, -46.6333];
 
+// Servidor de tiles. O padrão do OpenStreetMap serve para protótipo/demo; para
+// produção com tráfego, use um provedor próprio (ver política de uso do OSM).
+const URL_TILES =
+  process.env.NEXT_PUBLIC_MAP_TILE_URL || "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+
 // Usamos divIcon (HTML/CSS) em vez das imagens padrão do Leaflet, que quebram
 // com bundlers e não permitem número/cor por marcador.
 function icone(m: MarcadorMapa, destacado: boolean) {
@@ -58,7 +63,7 @@ export default function MapaLeaflet({ marcadores, linha, selecionadoId, onSeleci
     <MapContainer center={CENTRO_SP} zoom={12} scrollWheelZoom>
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        url={URL_TILES}
       />
       {linha && linha.length > 1 && <Polyline positions={linha} pathOptions={{ color: "#15803d", weight: 4, dashArray: "8 6" }} />}
       {marcadores.map((m) => (
