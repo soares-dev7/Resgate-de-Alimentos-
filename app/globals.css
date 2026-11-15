@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+/* Paleta do projeto: verde (resgate) + laranja (alimento). */
+@theme {
+  --color-marca-50: #f0fdf4;
+  --color-marca-100: #dcfce7;
+  --color-marca-500: #16a34a;
+  --color-marca-600: #15803d;
+  --color-marca-700: #166534;
+  --color-destaque: #ea580c;
+}
+
+body {
+  background: #fafaf9;
+  color: #1c1917;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+/* O container do Leaflet precisa de altura explícita para renderizar. */
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+  border-radius: 0.75rem;
+}
