@@ -33,12 +33,12 @@ export default function Home() {
           </div>
         </div>
         <div className="rounded-3xl bg-gradient-to-br from-marca-100 to-orange-100 p-8">
-          <dl className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-2 gap-6">
             <Numero valor="~94 kg" rotulo="de comida desperdiçada por brasileiro ao ano, só em casa¹" />
             <Numero valor="1/3" rotulo="dos alimentos produzidos no mundo se perdem ou são desperdiçados²" />
             <Numero valor="2,5 kg" rotulo="de CO₂e emitidos, em média, por kg de alimento desperdiçado²" />
             <Numero valor="Milhões" rotulo="de brasileiros ainda vivem em insegurança alimentar³" />
-          </dl>
+          </div>
         </div>
       </section>
 
@@ -111,9 +111,8 @@ export default function Home() {
 function Numero({ valor, rotulo }: { valor: string; rotulo: string }) {
   return (
     <div>
-      <dt className="sr-only">{rotulo}</dt>
-      <dd className="text-3xl font-extrabold text-marca-700">{valor}</dd>
-      <dd className="mt-1 text-sm text-stone-700">{rotulo}</dd>
+      <p className="text-3xl font-extrabold text-marca-700">{valor}</p>
+      <p className="mt-1 text-sm text-stone-700">{rotulo}</p>
     </div>
   );
 }
