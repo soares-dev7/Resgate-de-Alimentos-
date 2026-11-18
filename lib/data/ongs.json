@@ -1,0 +1,5 @@
+[
+  { "id": "ong-1", "nome": "Cozinha Comunitária Mãos Unidas", "endereco": "Praça da Sé, 100", "bairro": "Sé", "lat": -23.5505, "lng": -46.6333 },
+  { "id": "ong-2", "nome": "Instituto Prato Cheio", "endereco": "Rua do Gasômetro, 300", "bairro": "Brás", "lat": -23.5436, "lng": -46.6155 },
+  { "id": "ong-3", "nome": "Associação Sopa Solidária", "endereco": "Av. Vital Brasil, 500", "bairro": "Butantã", "lat": -23.5719, "lng": -46.7083 }
+]

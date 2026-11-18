@@ -1,0 +1,658 @@
+[
+ {
+  "id": "col-1",
+  "estabelecimentoId": "est-1",
+  "ongId": "ong-3",
+  "categoria": "paes",
+  "kg": 23,
+  "data": "2026-10-04"
+ },
+ {
+  "id": "col-2",
+  "estabelecimentoId": "est-4",
+  "ongId": "ong-1",
+  "categoria": "hortifruti",
+  "kg": 12,
+  "data": "2026-10-05"
+ },
+ {
+  "id": "col-3",
+  "estabelecimentoId": "est-10",
+  "ongId": "ong-2",
+  "categoria": "paes",
+  "kg": 8,
+  "data": "2026-10-06"
+ },
+ {
+  "id": "col-4",
+  "estabelecimentoId": "est-2",
+  "ongId": "ong-1",
+  "categoria": "hortifruti",
+  "kg": 20,
+  "data": "2026-10-07"
+ },
+ {
+  "id": "col-5",
+  "estabelecimentoId": "est-9",
+  "ongId": "ong-1",
+  "categoria": "graos",
+  "kg": 40,
+  "data": "2026-10-08"
+ },
+ {
+  "id": "col-6",
+  "estabelecimentoId": "est-4",
+  "ongId": "ong-2",
+  "categoria": "hortifruti",
+  "kg": 43,
+  "data": "2026-10-09"
+ },
+ {
+  "id": "col-7",
+  "estabelecimentoId": "est-5",
+  "ongId": "ong-1",
+  "categoria": "laticinios",
+  "kg": 16,
+  "data": "2026-10-09"
+ },
+ {
+  "id": "col-8",
+  "estabelecimentoId": "est-6",
+  "ongId": "ong-2",
+  "categoria": "paes",
+  "kg": 15,
+  "data": "2026-10-10"
+ },
+ {
+  "id": "col-9",
+  "estabelecimentoId": "est-4",
+  "ongId": "ong-2",
+  "categoria": "hortifruti",
+  "kg": 12,
+  "data": "2026-10-10"
+ },
+ {
+  "id": "col-10",
+  "estabelecimentoId": "est-7",
+  "ongId": "ong-1",
+  "categoria": "refeicoes_prontas",
+  "kg": 28,
+  "data": "2026-10-11"
+ },
+ {
+  "id": "col-11",
+  "estabelecimentoId": "est-10",
+  "ongId": "ong-2",
+  "categoria": "paes",
+  "kg": 8,
+  "data": "2026-10-12"
+ },
+ {
+  "id": "col-12",
+  "estabelecimentoId": "est-8",
+  "ongId": "ong-3",
+  "categoria": "refeicoes_prontas",
+  "kg": 13,
+  "data": "2026-10-12"
+ },
+ {
+  "id": "col-13",
+  "estabelecimentoId": "est-2",
+  "ongId": "ong-3",
+  "categoria": "hortifruti",
+  "kg": 24,
+  "data": "2026-10-13"
+ },
+ {
+  "id": "col-14",
+  "estabelecimentoId": "est-10",
+  "ongId": "ong-2",
+  "categoria": "paes",
+  "kg": 42,
+  "data": "2026-10-13"
+ },
+ {
+  "id": "col-15",
+  "estabelecimentoId": "est-2",
+  "ongId": "ong-1",
+  "categoria": "hortifruti",
+  "kg": 20,
+  "data": "2026-10-14"
+ },
+ {
+  "id": "col-16",
+  "estabelecimentoId": "est-2",
+  "ongId": "ong-1",
+  "categoria": "hortifruti",
+  "kg": 12,
+  "data": "2026-10-15"
+ },
+ {
+  "id": "col-17",
+  "estabelecimentoId": "est-7",
+  "ongId": "ong-2",
+  "categoria": "refeicoes_prontas",
+  "kg": 35,
+  "data": "2026-10-15"
+ },
+ {
+  "id": "col-18",
+  "estabelecimentoId": "est-3",
+  "ongId": "ong-2",
+  "categoria": "refeicoes_prontas",
+  "kg": 28,
+  "data": "2026-10-16"
+ },
+ {
+  "id": "col-19",
+  "estabelecimentoId": "est-4",
+  "ongId": "ong-3",
+  "categoria": "hortifruti",
+  "kg": 23,
+  "data": "2026-10-16"
+ },
+ {
+  "id": "col-20",
+  "estabelecimentoId": "est-10",
+  "ongId": "ong-3",
+  "categoria": "paes",
+  "kg": 16,
+  "data": "2026-10-17"
+ },
+ {
+  "id": "col-21",
+  "estabelecimentoId": "est-4",
+  "ongId": "ong-1",
+  "categoria": "hortifruti",
+  "kg": 35,
+  "data": "2026-10-18"
+ },
+ {
+  "id": "col-22",
+  "estabelecimentoId": "est-7",
+  "ongId": "ong-2",
+  "categoria": "refeicoes_prontas",
+  "kg": 41,
+  "data": "2026-10-18"
+ },
+ {
+  "id": "col-23",
+  "estabelecimentoId": "est-4",
+  "ongId": "ong-3",
+  "categoria": "hortifruti",
+  "kg": 26,
+  "data": "2026-10-18"
+ },
+ {
+  "id": "col-24",
+  "estabelecimentoId": "est-4",
+  "ongId": "ong-1",
+  "categoria": "hortifruti",
+  "kg": 26,
+  "data": "2026-10-19"
+ },
+ {
+  "id": "col-25",
+  "estabelecimentoId": "est-5",
+  "ongId": "ong-1",
+  "categoria": "laticinios",
+  "kg": 19,
+  "data": "2026-10-20"
+ },
+ {
+  "id": "col-26",
+  "estabelecimentoId": "est-10",
+  "ongId": "ong-3",
+  "categoria": "paes",
+  "kg": 26,
+  "data": "2026-10-20"
+ },
+ {
+  "id": "col-27",
+  "estabelecimentoId": "est-8",
+  "ongId": "ong-2",
+  "categoria": "refeicoes_prontas",
+  "kg": 35,
+  "data": "2026-10-21"
+ },
+ {
+  "id": "col-28",
+  "estabelecimentoId": "est-5",
+  "ongId": "ong-1",
+  "categoria": "laticinios",
+  "kg": 21,
+  "data": "2026-10-22"
+ },
+ {
+  "id": "col-29",
+  "estabelecimentoId": "est-9",
+  "ongId": "ong-3",
+  "categoria": "graos",
+  "kg": 22,
+  "data": "2026-10-23"
+ },
+ {
+  "id": "col-30",
+  "estabelecimentoId": "est-10",
+  "ongId": "ong-2",
+  "categoria": "paes",
+  "kg": 43,
+  "data": "2026-10-23"
+ },
+ {
+  "id": "col-31",
+  "estabelecimentoId": "est-7",
+  "ongId": "ong-2",
+  "categoria": "refeicoes_prontas",
+  "kg": 20,
+  "data": "2026-10-23"
+ },
+ {
+  "id": "col-32",
+  "estabelecimentoId": "est-9",
+  "ongId": "ong-2",
+  "categoria": "graos",
+  "kg": 11,
+  "data": "2026-10-24"
+ },
+ {
+  "id": "col-33",
+  "estabelecimentoId": "est-2",
+  "ongId": "ong-1",
+  "categoria": "hortifruti",
+  "kg": 16,
+  "data": "2026-10-25"
+ },
+ {
+  "id": "col-34",
+  "estabelecimentoId": "est-7",
+  "ongId": "ong-3",
+  "categoria": "refeicoes_prontas",
+  "kg": 10,
+  "data": "2026-10-26"
+ },
+ {
+  "id": "col-35",
+  "estabelecimentoId": "est-7",
+  "ongId": "ong-2",
+  "categoria": "refeicoes_prontas",
+  "kg": 44,
+  "data": "2026-10-26"
+ },
+ {
+  "id": "col-36",
+  "estabelecimentoId": "est-8",
+  "ongId": "ong-3",
+  "categoria": "refeicoes_prontas",
+  "kg": 22,
+  "data": "2026-10-26"
+ },
+ {
+  "id": "col-37",
+  "estabelecimentoId": "est-1",
+  "ongId": "ong-3",
+  "categoria": "paes",
+  "kg": 13,
+  "data": "2026-10-27"
+ },
+ {
+  "id": "col-38",
+  "estabelecimentoId": "est-9",
+  "ongId": "ong-2",
+  "categoria": "graos",
+  "kg": 27,
+  "data": "2026-10-27"
+ },
+ {
+  "id": "col-39",
+  "estabelecimentoId": "est-2",
+  "ongId": "ong-2",
+  "categoria": "hortifruti",
+  "kg": 33,
+  "data": "2026-10-27"
+ },
+ {
+  "id": "col-40",
+  "estabelecimentoId": "est-8",
+  "ongId": "ong-1",
+  "categoria": "refeicoes_prontas",
+  "kg": 22,
+  "data": "2026-10-28"
+ },
+ {
+  "id": "col-41",
+  "estabelecimentoId": "est-3",
+  "ongId": "ong-3",
+  "categoria": "refeicoes_prontas",
+  "kg": 12,
+  "data": "2026-10-29"
+ },
+ {
+  "id": "col-42",
+  "estabelecimentoId": "est-5",
+  "ongId": "ong-3",
+  "categoria": "laticinios",
+  "kg": 38,
+  "data": "2026-10-29"
+ },
+ {
+  "id": "col-43",
+  "estabelecimentoId": "est-10",
+  "ongId": "ong-1",
+  "categoria": "paes",
+  "kg": 15,
+  "data": "2026-10-29"
+ },
+ {
+  "id": "col-44",
+  "estabelecimentoId": "est-3",
+  "ongId": "ong-3",
+  "categoria": "refeicoes_prontas",
+  "kg": 39,
+  "data": "2026-10-30"
+ },
+ {
+  "id": "col-45",
+  "estabelecimentoId": "est-1",
+  "ongId": "ong-3",
+  "categoria": "paes",
+  "kg": 26,
+  "data": "2026-10-30"
+ },
+ {
+  "id": "col-46",
+  "estabelecimentoId": "est-1",
+  "ongId": "ong-1",
+  "categoria": "paes",
+  "kg": 29,
+  "data": "2026-10-31"
+ },
+ {
+  "id": "col-47",
+  "estabelecimentoId": "est-5",
+  "ongId": "ong-1",
+  "categoria": "laticinios",
+  "kg": 9,
+  "data": "2026-10-31"
+ },
+ {
+  "id": "col-48",
+  "estabelecimentoId": "est-10",
+  "ongId": "ong-1",
+  "categoria": "paes",
+  "kg": 11,
+  "data": "2026-11-01"
+ },
+ {
+  "id": "col-49",
+  "estabelecimentoId": "est-8",
+  "ongId": "ong-1",
+  "categoria": "refeicoes_prontas",
+  "kg": 40,
+  "data": "2026-11-01"
+ },
+ {
+  "id": "col-50",
+  "estabelecimentoId": "est-3",
+  "ongId": "ong-3",
+  "categoria": "refeicoes_prontas",
+  "kg": 36,
+  "data": "2026-11-02"
+ },
+ {
+  "id": "col-51",
+  "estabelecimentoId": "est-9",
+  "ongId": "ong-1",
+  "categoria": "graos",
+  "kg": 22,
+  "data": "2026-11-02"
+ },
+ {
+  "id": "col-52",
+  "estabelecimentoId": "est-4",
+  "ongId": "ong-3",
+  "categoria": "hortifruti",
+  "kg": 18,
+  "data": "2026-11-03"
+ },
+ {
+  "id": "col-53",
+  "estabelecimentoId": "est-5",
+  "ongId": "ong-2",
+  "categoria": "laticinios",
+  "kg": 29,
+  "data": "2026-11-03"
+ },
+ {
+  "id": "col-54",
+  "estabelecimentoId": "est-8",
+  "ongId": "ong-3",
+  "categoria": "refeicoes_prontas",
+  "kg": 34,
+  "data": "2026-11-03"
+ },
+ {
+  "id": "col-55",
+  "estabelecimentoId": "est-2",
+  "ongId": "ong-1",
+  "categoria": "hortifruti",
+  "kg": 20,
+  "data": "2026-11-03"
+ },
+ {
+  "id": "col-56",
+  "estabelecimentoId": "est-6",
+  "ongId": "ong-1",
+  "categoria": "paes",
+  "kg": 43,
+  "data": "2026-11-04"
+ },
+ {
+  "id": "col-57",
+  "estabelecimentoId": "est-10",
+  "ongId": "ong-1",
+  "categoria": "paes",
+  "kg": 6,
+  "data": "2026-11-05"
+ },
+ {
+  "id": "col-58",
+  "estabelecimentoId": "est-2",
+  "ongId": "ong-3",
+  "categoria": "hortifruti",
+  "kg": 9,
+  "data": "2026-11-05"
+ },
+ {
+  "id": "col-59",
+  "estabelecimentoId": "est-2",
+  "ongId": "ong-1",
+  "categoria": "hortifruti",
+  "kg": 27,
+  "data": "2026-11-06"
+ },
+ {
+  "id": "col-60",
+  "estabelecimentoId": "est-2",
+  "ongId": "ong-3",
+  "categoria": "hortifruti",
+  "kg": 21,
+  "data": "2026-11-06"
+ },
+ {
+  "id": "col-61",
+  "estabelecimentoId": "est-8",
+  "ongId": "ong-1",
+  "categoria": "refeicoes_prontas",
+  "kg": 40,
+  "data": "2026-11-07"
+ },
+ {
+  "id": "col-62",
+  "estabelecimentoId": "est-3",
+  "ongId": "ong-3",
+  "categoria": "refeicoes_prontas",
+  "kg": 42,
+  "data": "2026-11-07"
+ },
+ {
+  "id": "col-63",
+  "estabelecimentoId": "est-10",
+  "ongId": "ong-2",
+  "categoria": "paes",
+  "kg": 21,
+  "data": "2026-11-07"
+ },
+ {
+  "id": "col-64",
+  "estabelecimentoId": "est-7",
+  "ongId": "ong-1",
+  "categoria": "refeicoes_prontas",
+  "kg": 12,
+  "data": "2026-11-08"
+ },
+ {
+  "id": "col-65",
+  "estabelecimentoId": "est-2",
+  "ongId": "ong-3",
+  "categoria": "hortifruti",
+  "kg": 33,
+  "data": "2026-11-08"
+ },
+ {
+  "id": "col-66",
+  "estabelecimentoId": "est-6",
+  "ongId": "ong-2",
+  "categoria": "paes",
+  "kg": 32,
+  "data": "2026-11-08"
+ },
+ {
+  "id": "col-67",
+  "estabelecimentoId": "est-8",
+  "ongId": "ong-3",
+  "categoria": "refeicoes_prontas",
+  "kg": 9,
+  "data": "2026-11-08"
+ },
+ {
+  "id": "col-68",
+  "estabelecimentoId": "est-1",
+  "ongId": "ong-2",
+  "categoria": "paes",
+  "kg": 27,
+  "data": "2026-11-09"
+ },
+ {
+  "id": "col-69",
+  "estabelecimentoId": "est-4",
+  "ongId": "ong-1",
+  "categoria": "hortifruti",
+  "kg": 18,
+  "data": "2026-11-10"
+ },
+ {
+  "id": "col-70",
+  "estabelecimentoId": "est-3",
+  "ongId": "ong-2",
+  "categoria": "refeicoes_prontas",
+  "kg": 17,
+  "data": "2026-11-11"
+ },
+ {
+  "id": "col-71",
+  "estabelecimentoId": "est-5",
+  "ongId": "ong-2",
+  "categoria": "laticinios",
+  "kg": 21,
+  "data": "2026-11-11"
+ },
+ {
+  "id": "col-72",
+  "estabelecimentoId": "est-2",
+  "ongId": "ong-2",
+  "categoria": "hortifruti",
+  "kg": 41,
+  "data": "2026-11-11"
+ },
+ {
+  "id": "col-73",
+  "estabelecimentoId": "est-2",
+  "ongId": "ong-1",
+  "categoria": "hortifruti",
+  "kg": 40,
+  "data": "2026-11-11"
+ },
+ {
+  "id": "col-74",
+  "estabelecimentoId": "est-2",
+  "ongId": "ong-1",
+  "categoria": "hortifruti",
+  "kg": 16,
+  "data": "2026-11-12"
+ },
+ {
+  "id": "col-75",
+  "estabelecimentoId": "est-8",
+  "ongId": "ong-2",
+  "categoria": "refeicoes_prontas",
+  "kg": 19,
+  "data": "2026-11-13"
+ },
+ {
+  "id": "col-76",
+  "estabelecimentoId": "est-7",
+  "ongId": "ong-1",
+  "categoria": "refeicoes_prontas",
+  "kg": 16,
+  "data": "2026-11-13"
+ },
+ {
+  "id": "col-77",
+  "estabelecimentoId": "est-7",
+  "ongId": "ong-1",
+  "categoria": "refeicoes_prontas",
+  "kg": 30,
+  "data": "2026-11-13"
+ },
+ {
+  "id": "col-78",
+  "estabelecimentoId": "est-5",
+  "ongId": "ong-2",
+  "categoria": "laticinios",
+  "kg": 24,
+  "data": "2026-11-13"
+ },
+ {
+  "id": "col-79",
+  "estabelecimentoId": "est-9",
+  "ongId": "ong-3",
+  "categoria": "graos",
+  "kg": 37,
+  "data": "2026-11-14"
+ },
+ {
+  "id": "col-80",
+  "estabelecimentoId": "est-3",
+  "ongId": "ong-1",
+  "categoria": "refeicoes_prontas",
+  "kg": 24,
+  "data": "2026-11-14"
+ },
+ {
+  "id": "col-81",
+  "estabelecimentoId": "est-4",
+  "ongId": "ong-1",
+  "categoria": "hortifruti",
+  "kg": 43,
+  "data": "2026-11-14"
+ },
+ {
+  "id": "col-82",
+  "estabelecimentoId": "est-9",
+  "ongId": "ong-1",
+  "categoria": "graos",
+  "kg": 26,
+  "data": "2026-11-14"
+ }
+]
