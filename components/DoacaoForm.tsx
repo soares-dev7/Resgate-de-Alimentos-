@@ -77,7 +77,7 @@ export default function DoacaoForm() {
   if (criada) {
     return (
       <div role="status" className="rounded-2xl border border-marca-500 bg-marca-50 p-6">
-        <h2 className="text-xl font-bold text-marca-700">Doação publicada! 🎉</h2>
+        <h2 className="text-xl font-bold text-marca-700">Doação publicada!</h2>
         <p className="mt-2 text-stone-700">
           {fmtKg(criada.quantidadeKg)} de {ROTULO_CATEGORIA[criada.categoria].toLowerCase()} — retirada em{" "}
           {fmtJanela(criada.janelaInicio, criada.janelaFim)}. ONGs próximas já podem reservar.
