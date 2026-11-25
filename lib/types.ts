@@ -47,6 +47,8 @@ export interface Doacao extends Coordenada {
   status: StatusDoacao;
   /** ONG que reservou (quando status != "disponivel"). */
   ongId?: string;
+  /** Data/hora da reserva (usada para comparar a rota sugerida com a ordem das reservas). */
+  reservadaEm?: string;
   /** Data/hora em que a coleta foi confirmada. */
   coletadaEm?: string;
 }
