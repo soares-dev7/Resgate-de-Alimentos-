@@ -58,7 +58,7 @@ export default function RotaPage() {
         <div className="rounded-2xl border border-dashed border-stone-300 p-10 text-center">
           <p className="text-stone-600">Nenhuma doação reservada para montar a rota.</p>
           {coletadasHoje.length > 0 && (
-            <p className="mt-1 text-marca-700">✅ {coletadasHoje.length} coleta(s) confirmada(s). Veja no painel de impacto.</p>
+            <p className="mt-1 text-marca-700">{coletadasHoje.length} coleta(s) confirmada(s). Veja no painel de impacto.</p>
           )}
           <Link href="/coletas" className="mt-4 inline-block rounded-lg bg-marca-600 px-4 py-2 font-semibold text-white">
             Reservar doações
