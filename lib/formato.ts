@@ -15,3 +15,8 @@ export function fmtDia(dataISO: string): string {
 export function fmtJanela(inicio: string, fim: string): string {
   return `${fmtDia(inicio)}, ${inicio.slice(11, 16)}–${fim.slice(11, 16)}`;
 }
+
+/** "18:05" a partir de uma data. */
+export function fmtHora(data: Date): string {
+  return data.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+}
