@@ -157,12 +157,13 @@ function Comparacao({ rota, referencia }: { rota: RotaSugerida<unknown>; referen
   return (
     <div className="mb-6 rounded-xl border border-marca-500 bg-marca-50 p-4 text-sm text-stone-800">
       <p className="font-semibold text-marca-700">Ganho da rota sugerida</p>
-      <p className="mt-1">{distancia}</p>
       {janelasSalvas > 0 && (
         <p className="mt-1">
-          Na ordem das reservas, {janelasSalvas} coleta(s) chegariam depois do fim da janela de retirada.
+          Evita {janelasSalvas} coleta(s) fora da janela: na ordem das reservas, elas chegariam depois do fim da
+          janela de retirada.
         </p>
       )}
+      <p className="mt-1">{distancia}</p>
       {rota.coletasForaDaJanela > 0 && (
         <p className="mt-2 text-red-700">
           {rota.coletasForaDaJanela} coleta(s) não cabem na janela mesmo na melhor ordem encontrada. Avalie cancelar
