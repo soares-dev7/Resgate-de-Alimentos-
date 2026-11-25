@@ -1,90 +1,147 @@
 "use client";
 
 /**
- * Estado global da demo (em memória + localStorage do navegador).
+ * Estado global da aplicação.
  *
- * Nesta fase não há banco de dados nem autenticação: a "ONG logada" é escolhida
- * num seletor e as doações vivem no navegador. Quando houver back-end, este
- * provider passa a chamar a API (ou hooks do Convex/Supabase) em vez de
- * manipular o array local.
+ * Os dados vêm do repositório (lib/data/repositorio.ts): Supabase quando
+ * configurado, ou o modo local de demonstração. As telas só usam `useApp()` e
+ * não sabem de onde os dados vêm.
+ *
+ * Ainda não há login: a "ONG atual" é escolhida num seletor e fica salva no
+ * navegador. TODO: trocar pela ONG do usuário autenticado.
  */
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import type { Doacao } from "@/lib/types";
-import { getDoacoesIniciais, getOngs } from "@/lib/data";
+import type { Coleta, Doacao } from "@/lib/types";
+import { getOngs } from "@/lib/data";
+import { criarRepositorio, type NovaDoacao, type Repositorio } from "@/lib/data/repositorio";
 
-const CHAVE_STORAGE = "resgate-alimentos:v1";
+const CHAVE_ONG = "resgate-alimentos:ong";
 
 interface EstadoApp {
+  modo: Repositorio["modo"];
   doacoes: Doacao[];
+  coletas: Coleta[];
+  /** true até a primeira carga terminar. */
+  carregando: boolean;
+  /** Última mensagem de erro (ex.: doação já reservada por outra ONG). */
+  erro: string | null;
+  limparErro: () => void;
+  /** Ids de doações com uma ação em andamento (para desabilitar botões). */
+  processando: ReadonlySet<string>;
   ongAtualId: string;
   setOngAtualId: (id: string) => void;
-  adicionarDoacao: (d: Omit<Doacao, "id" | "status">) => Doacao;
-  reservar: (doacaoId: string) => void;
-  cancelarReserva: (doacaoId: string) => void;
-  confirmarColeta: (doacaoId: string) => void;
-  resetarDemo: () => void;
+  /** Lança erro se não conseguir publicar (o formulário mostra a mensagem). */
+  adicionarDoacao: (d: NovaDoacao) => Promise<Doacao>;
+  reservar: (doacaoId: string) => Promise<void>;
+  cancelarReserva: (doacaoId: string) => Promise<void>;
+  confirmarColeta: (doacaoId: string) => Promise<void>;
+  /** Só existe no modo local. */
+  resetarDemo?: () => Promise<void>;
 }
 
 const Contexto = createContext<EstadoApp | null>(null);
 
+// Um repositório por aba do navegador.
+let repositorio: Repositorio | null = null;
+const obterRepositorio = () => (repositorio ??= criarRepositorio());
+
 export function AppProvider({ children }: { children: React.ReactNode }) {
-  const [doacoes, setDoacoes] = useState<Doacao[]>(() => getDoacoesIniciais());
-  const [ongAtualId, setOngAtualId] = useState<string>(getOngs()[0].id);
-  const [carregado, setCarregado] = useState(false);
+  const repo = obterRepositorio();
+  const [doacoes, setDoacoes] = useState<Doacao[]>([]);
+  const [coletas, setColetas] = useState<Coleta[]>([]);
+  const [carregando, setCarregando] = useState(true);
+  const [erro, setErro] = useState<string | null>(null);
+  const [processando, setProcessando] = useState<ReadonlySet<string>>(new Set());
+  const [ongAtualId, setOngAtual] = useState<string>(getOngs()[0].id);
 
-  // Carrega o estado salvo depois da montagem (evita divergência de hidratação SSR).
-  useEffect(() => {
+  const recarregar = useCallback(async () => {
     try {
-      const salvo = localStorage.getItem(CHAVE_STORAGE);
-      if (salvo) {
-        const dados = JSON.parse(salvo) as { doacoes: Doacao[]; ongAtualId: string };
-        setDoacoes(dados.doacoes);
-        setOngAtualId(dados.ongAtualId);
-      }
-    } catch {
-      // localStorage indisponível ou corrompido: segue com os mocks.
+      const [d, c] = await Promise.all([repo.listarDoacoes(), repo.listarColetas()]);
+      setDoacoes(d);
+      setColetas(c);
+    } catch (e) {
+      setErro(mensagem(e));
+    } finally {
+      setCarregando(false);
     }
-    setCarregado(true);
-  }, []);
+  }, [repo]);
 
+  // Primeira carga + atualização em tempo real (modo Supabase).
   useEffect(() => {
-    if (!carregado) return;
     try {
-      localStorage.setItem(CHAVE_STORAGE, JSON.stringify({ doacoes, ongAtualId }));
+      const ong = localStorage.getItem(CHAVE_ONG);
+      if (ong && getOngs().some((o) => o.id === ong)) setOngAtual(ong);
     } catch {
       /* ignora */
     }
-  }, [doacoes, ongAtualId, carregado]);
+    void recarregar();
+    return repo.observar(() => void recarregar());
+  }, [repo, recarregar]);
 
-  const atualizar = useCallback((id: string, mudanca: Partial<Doacao>) => {
-    setDoacoes((lista) => lista.map((d) => (d.id === id ? { ...d, ...mudanca } : d)));
+  const setOngAtualId = useCallback((id: string) => {
+    setOngAtual(id);
+    try {
+      localStorage.setItem(CHAVE_ONG, id);
+    } catch {
+      /* ignora */
+    }
   }, []);
+
+  /** Executa uma ação sobre uma doação, mostrando erro e recarregando no fim. */
+  const executar = useCallback(
+    async (doacaoId: string, acao: () => Promise<void>) => {
+      setProcessando((p) => new Set(p).add(doacaoId));
+      try {
+        await acao();
+      } catch (e) {
+        setErro(mensagem(e));
+      } finally {
+        await recarregar();
+        setProcessando((p) => {
+          const novo = new Set(p);
+          novo.delete(doacaoId);
+          return novo;
+        });
+      }
+    },
+    [recarregar],
+  );
 
   const valor = useMemo<EstadoApp>(
     () => ({
+      modo: repo.modo,
       doacoes,
+      coletas,
+      carregando,
+      erro,
+      limparErro: () => setErro(null),
+      processando,
       ongAtualId,
       setOngAtualId,
-      adicionarDoacao: (d) => {
-        const nova: Doacao = { ...d, id: `doa-${Date.now()}`, status: "disponivel" };
-        setDoacoes((lista) => [nova, ...lista]);
+      adicionarDoacao: async (d) => {
+        const nova = await repo.criarDoacao(d);
+        await recarregar();
         return nova;
       },
-      reservar: (id) =>
-        atualizar(id, { status: "reservada", ongId: ongAtualId, reservadaEm: new Date().toISOString() }),
-      cancelarReserva: (id) =>
-        atualizar(id, { status: "disponivel", ongId: undefined, reservadaEm: undefined }),
-      confirmarColeta: (id) =>
-        atualizar(id, { status: "coletada", coletadaEm: new Date().toISOString() }),
-      resetarDemo: () => {
-        setDoacoes(getDoacoesIniciais());
-        setOngAtualId(getOngs()[0].id);
-      },
+      reservar: (id) => executar(id, () => repo.reservar(id, ongAtualId)),
+      cancelarReserva: (id) => executar(id, () => repo.cancelarReserva(id, ongAtualId)),
+      confirmarColeta: (id) => executar(id, () => repo.confirmarColeta(id, ongAtualId)),
+      resetarDemo: repo.reiniciar
+        ? async () => {
+            await repo.reiniciar!();
+            setOngAtualId(getOngs()[0].id);
+            await recarregar();
+          }
+        : undefined,
     }),
-    [doacoes, ongAtualId, atualizar],
+    [repo, doacoes, coletas, carregando, erro, processando, ongAtualId, setOngAtualId, recarregar, executar],
   );
 
   return <Contexto.Provider value={valor}>{children}</Contexto.Provider>;
+}
+
+function mensagem(e: unknown): string {
+  return e instanceof Error ? e.message : "Algo deu errado. Tente de novo.";
 }
 
 export function useApp(): EstadoApp {

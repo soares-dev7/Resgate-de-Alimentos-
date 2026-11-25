@@ -14,7 +14,7 @@ import { useApp } from "@/lib/store";
 type Filtro = "disponiveis" | "minhas";
 
 export default function ColetasPage() {
-  const { doacoes, ongAtualId, reservar, cancelarReserva } = useApp();
+  const { doacoes, ongAtualId, reservar, cancelarReserva, processando } = useApp();
   const [filtro, setFiltro] = useState<Filtro>("disponiveis");
   const [selecionadaId, setSelecionadaId] = useState<string>();
   const ong = getOng(ongAtualId)!;
@@ -95,11 +95,19 @@ export default function ColetasPage() {
               onSelecionar={() => setSelecionadaId(doacao.id)}
               acao={
                 doacao.status === "disponivel" ? (
-                  <button onClick={() => reservar(doacao.id)} className="rounded-lg bg-destaque px-4 py-1.5 text-sm font-semibold text-white hover:opacity-90">
+                  <button
+                    onClick={() => void reservar(doacao.id)}
+                    disabled={processando.has(doacao.id)}
+                    className="rounded-lg bg-destaque px-4 py-1.5 text-sm font-semibold text-white hover:opacity-90 disabled:opacity-60"
+                  >
                     Reservar
                   </button>
                 ) : (
-                  <button onClick={() => cancelarReserva(doacao.id)} className="rounded-lg border border-stone-300 px-4 py-1.5 text-sm font-medium text-stone-700 hover:bg-stone-100">
+                  <button
+                    onClick={() => void cancelarReserva(doacao.id)}
+                    disabled={processando.has(doacao.id)}
+                    className="rounded-lg border border-stone-300 px-4 py-1.5 text-sm font-medium text-stone-700 hover:bg-stone-100 disabled:opacity-60"
+                  >
                     Cancelar reserva
                   </button>
                 )

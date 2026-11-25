@@ -12,7 +12,7 @@ import { type RotaSugerida, VELOCIDADE_MEDIA_KMH, simularTrajeto, sugerirRota } 
 import { useApp } from "@/lib/store";
 
 export default function RotaPage() {
-  const { doacoes, ongAtualId, confirmarColeta } = useApp();
+  const { doacoes, ongAtualId, confirmarColeta, processando } = useApp();
   const ong = getOng(ongAtualId)!;
 
   const reservadas = useMemo(
@@ -114,8 +114,9 @@ export default function RotaPage() {
                       )}
                       <p className="text-xs text-stone-500">+{fmtNumero(p.distanciaDesdeAnteriorKm)} km em linha reta desde a parada anterior</p>
                       <button
-                        onClick={() => confirmarColeta(p.ponto.id)}
-                        className="mt-2 rounded-lg bg-marca-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-marca-700"
+                        onClick={() => void confirmarColeta(p.ponto.id)}
+                        disabled={processando.has(p.ponto.id)}
+                        className="mt-2 rounded-lg bg-marca-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-marca-700 disabled:opacity-60"
                       >
                         Confirmar coleta
                       </button>

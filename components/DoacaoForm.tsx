@@ -22,10 +22,12 @@ const VAZIO: DadosDoacaoForm = {
 };
 
 export default function DoacaoForm() {
-  const { adicionarDoacao } = useApp();
+  const { adicionarDoacao, modo } = useApp();
   const [dados, setDados] = useState<DadosDoacaoForm>(VAZIO);
   const [erros, setErros] = useState<ErrosDoacao>({});
   const [criada, setCriada] = useState<Doacao | null>(null);
+  const [enviando, setEnviando] = useState(false);
+  const [erroEnvio, setErroEnvio] = useState<string | null>(null);
 
   const hoje = dataISO(new Date());
 
@@ -46,7 +48,7 @@ export default function DoacaoForm() {
     setErros((e) => ({ ...e, [campo]: undefined }));
   }
 
-  function enviar(e: React.FormEvent) {
+  async function enviar(e: React.FormEvent) {
     e.preventDefault();
     const encontrados = validarDoacao(dados, hoje);
     setErros(encontrados);
@@ -58,20 +60,28 @@ export default function DoacaoForm() {
     const coord =
       est && est.endereco === dados.endereco.trim() ? { lat: est.lat, lng: est.lng } : BAIRROS_SP[dados.bairro];
 
-    const nova = adicionarDoacao({
-      estabelecimentoId: dados.estabelecimentoId,
-      categoria: dados.categoria as CategoriaAlimento,
-      descricao: dados.descricao.trim(),
-      quantidadeKg: Number(dados.quantidadeKg.replace(",", ".")),
-      validade: dados.validade,
-      janelaInicio: `${dados.dataRetirada}T${dados.horaInicio}`,
-      janelaFim: `${dados.dataRetirada}T${dados.horaFim}`,
-      endereco: dados.endereco.trim(),
-      bairro: dados.bairro,
-      ...coord,
-    });
-    setCriada(nova);
-    setDados(VAZIO);
+    setEnviando(true);
+    setErroEnvio(null);
+    try {
+      const nova = await adicionarDoacao({
+        estabelecimentoId: dados.estabelecimentoId,
+        categoria: dados.categoria as CategoriaAlimento,
+        descricao: dados.descricao.trim(),
+        quantidadeKg: Number(dados.quantidadeKg.replace(",", ".")),
+        validade: dados.validade,
+        janelaInicio: `${dados.dataRetirada}T${dados.horaInicio}`,
+        janelaFim: `${dados.dataRetirada}T${dados.horaFim}`,
+        endereco: dados.endereco.trim(),
+        bairro: dados.bairro,
+        ...coord,
+      });
+      setCriada(nova);
+      setDados(VAZIO);
+    } catch (falha) {
+      setErroEnvio(falha instanceof Error ? falha.message : "Não foi possível publicar a doação.");
+    } finally {
+      setEnviando(false);
+    }
   }
 
   if (criada) {
@@ -152,11 +162,20 @@ export default function DoacaoForm() {
       </Campo>
 
       <div className="sm:col-span-2">
-        <button type="submit" className="w-full rounded-xl bg-marca-600 px-6 py-3 font-semibold text-white hover:bg-marca-700 sm:w-auto">
-          Publicar doação
+        {erroEnvio && (
+          <p role="alert" className="mb-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{erroEnvio}</p>
+        )}
+        <button
+          type="submit"
+          disabled={enviando}
+          className="w-full rounded-xl bg-marca-600 px-6 py-3 font-semibold text-white hover:bg-marca-700 disabled:opacity-60 sm:w-auto"
+        >
+          {enviando ? "Publicando…" : "Publicar doação"}
         </button>
         <p className="mt-2 text-xs text-stone-500">
-          Protótipo: a doação fica salva apenas neste navegador.
+          {modo === "supabase"
+            ? "A doação fica visível na hora para as ONGs."
+            : "Modo de demonstração: a doação fica salva apenas neste navegador."}
         </p>
       </div>
     </form>

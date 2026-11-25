@@ -1,31 +1,15 @@
 "use client";
 
-import { useMemo } from "react";
 import BarrasHorizontais from "@/components/BarrasHorizontais";
 import PageHeader from "@/components/PageHeader";
-import { getColetasHistoricas, getEstabelecimento, getOng } from "@/lib/data";
+import { getEstabelecimento, getOng } from "@/lib/data";
 import { fmtDia, fmtKg, fmtNumero } from "@/lib/formato";
 import { CO2E_KG_POR_KG_ALIMENTO, KG_POR_REFEICAO, agruparPor, inicioDaSemana, resumir } from "@/lib/impacto";
 import { useApp } from "@/lib/store";
-import type { Coleta } from "@/lib/types";
 
 export default function ImpactoPage() {
-  const { doacoes, resetarDemo } = useApp();
-
-  // Histórico mockado + coletas confirmadas nesta sessão (tela /rota).
-  const coletas = useMemo<Coleta[]>(() => {
-    const daSessao: Coleta[] = doacoes
-      .filter((d) => d.status === "coletada" && d.ongId)
-      .map((d) => ({
-        id: `sessao-${d.id}`,
-        estabelecimentoId: d.estabelecimentoId,
-        ongId: d.ongId!,
-        categoria: d.categoria,
-        kg: d.quantidadeKg,
-        data: (d.coletadaEm ?? new Date().toISOString()).slice(0, 10),
-      }));
-    return [...getColetasHistoricas(), ...daSessao];
-  }, [doacoes]);
+  // Coletas concluídas: histórico + as confirmadas em /rota (ver lib/data/repositorio.ts).
+  const { coletas, resetarDemo } = useApp();
 
   const total = resumir(coletas);
   const porSemana = agruparPor(coletas, (c) => inicioDaSemana(c.data))
@@ -37,9 +21,11 @@ export default function ImpactoPage() {
   return (
     <>
       <PageHeader titulo="Painel de impacto" descricao="Quanto alimento deixou de ir para o lixo e virou refeição. Dados de demonstração.">
-        <button onClick={resetarDemo} className="rounded-lg border border-stone-300 px-3 py-2 text-sm text-stone-600 hover:bg-stone-100">
-          Reiniciar dados da demo
-        </button>
+        {resetarDemo && (
+          <button onClick={() => void resetarDemo()} className="rounded-lg border border-stone-300 px-3 py-2 text-sm text-stone-600 hover:bg-stone-100">
+            Reiniciar dados da demo
+          </button>
+        )}
       </PageHeader>
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
