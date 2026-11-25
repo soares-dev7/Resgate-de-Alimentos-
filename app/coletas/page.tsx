@@ -31,7 +31,7 @@ export default function ColetasPage() {
   const kgReservados = minhasReservas.reduce((s, d) => s + d.quantidadeKg, 0);
 
   const marcadores: MarcadorMapa[] = [
-    { id: ong.id, lat: ong.lat, lng: ong.lng, rotulo: "🏠", cor: COR.ong, popup: <strong>{ong.nome} (sua sede)</strong> },
+    { id: ong.id, lat: ong.lat, lng: ong.lng, rotulo: "S", cor: COR.ong, popup: <strong>{ong.nome} (sua sede)</strong> },
     ...lista.map(({ doacao: d }) => ({
       id: d.id,
       lat: d.lat,

@@ -27,7 +27,7 @@ export default function RotaPage() {
   const impactoPrevisto = calcularImpacto(kgTotal, reservadas.length);
 
   const marcadores: MarcadorMapa[] = [
-    { id: ong.id, lat: ong.lat, lng: ong.lng, rotulo: "🏠", cor: COR.ong, popup: <strong>{ong.nome} (início e fim)</strong> },
+    { id: ong.id, lat: ong.lat, lng: ong.lng, rotulo: "S", cor: COR.ong, popup: <strong>{ong.nome} (início e fim)</strong> },
     ...rota.paradas.map((p) => ({
       id: p.ponto.id,
       lat: p.ponto.lat,
