@@ -13,7 +13,7 @@ const Mapa = dynamic(() => import("./MapaLeaflet"), {
 
 export default Mapa;
 
-/** Cores dos marcadores por situação. */
+/** Cores dos marcadores por situação. A sede da ONG usa o rótulo "S". */
 export const COR = {
   disponivel: "#ea580c",
   reservadaMinha: "#15803d",

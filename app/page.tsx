@@ -59,11 +59,11 @@ export default function Home() {
         </div>
         <div>
           <h2 className="text-2xl font-bold">A solução</h2>
-          <ul className="mt-3 space-y-2 text-stone-600">
-            <li>✅ Cadastro rápido de doações com validade e janela de retirada.</li>
-            <li>✅ Mapa de doações disponíveis perto de cada ONG.</li>
-            <li>✅ Agrupamento das coletas e sugestão de rota.</li>
-            <li>✅ Painel de impacto para estabelecimentos, ONGs e parceiros.</li>
+          <ul className="mt-3 list-disc space-y-2 pl-5 text-stone-600 marker:text-marca-600">
+            <li>Cadastro rápido de doações com validade e janela de retirada.</li>
+            <li>Mapa de doações disponíveis perto de cada ONG.</li>
+            <li>Agrupamento das coletas e sugestão de rota.</li>
+            <li>Painel de impacto para estabelecimentos, ONGs e parceiros.</li>
           </ul>
         </div>
       </section>
