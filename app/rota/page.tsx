@@ -6,7 +6,7 @@ import Mapa, { COR, type MarcadorMapa } from "@/components/Mapa";
 import PageHeader from "@/components/PageHeader";
 import SeletorOng from "@/components/SeletorOng";
 import { getEstabelecimento, getOng } from "@/lib/data";
-import { fmtHora, fmtJanela, fmtKg, fmtNumero } from "@/lib/formato";
+import { fmtDiaHora, fmtJanela, fmtKg, fmtNumero } from "@/lib/formato";
 import { calcularImpacto } from "@/lib/impacto";
 import { type RotaSugerida, VELOCIDADE_MEDIA_KMH, simularTrajeto, sugerirRota } from "@/lib/rota";
 import { useApp } from "@/lib/store";
@@ -104,8 +104,8 @@ export default function RotaPage() {
                       <p className="text-sm text-stone-600">
                         {fmtKg(p.ponto.quantidadeKg)} · janela {fmtJanela(p.ponto.janelaInicio, p.ponto.janelaFim)}
                       </p>
-                      {p.chegadaPrevista && (
-                        <p className="text-sm font-medium text-stone-800">Chegada prevista: {fmtHora(p.chegadaPrevista)}</p>
+                      {p.coletaPrevista && (
+                        <p className="text-sm font-medium text-stone-800">Coleta prevista: {fmtDiaHora(p.coletaPrevista)}</p>
                       )}
                       {p.foraDaJanela && (
                         <p className="mt-1 rounded-md bg-red-50 px-2 py-1 text-sm text-red-700">

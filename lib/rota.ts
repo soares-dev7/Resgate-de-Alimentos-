@@ -71,6 +71,8 @@ export interface ParadaRota<T> {
   distanciaDesdeAnteriorKm: number;
   /** Horário previsto de chegada (só quando os pontos têm janela de retirada). */
   chegadaPrevista?: Date;
+  /** Quando a coleta começa: a chegada ou a abertura da janela, o que vier depois. */
+  coletaPrevista?: Date;
   /** true se a coleta começaria depois do fim da janela de retirada. */
   foraDaJanela: boolean;
 }
@@ -181,17 +183,19 @@ export function simularTrajeto<T extends Coordenada>(origem: Coordenada, ordem: 
     minutosRodando += viagem + MINUTOS_POR_PARADA;
 
     let chegadaPrevista: Date | undefined;
+    let coletaPrevista: Date | undefined;
     let foraDaJanela = false;
     if (comJanela) {
       const janela = ponto as unknown as JanelaRetirada;
       const chegada = relogio + viagem * MS_POR_MINUTO;
       const inicio = Math.max(chegada, abre(janela));
       chegadaPrevista = new Date(chegada);
+      coletaPrevista = new Date(inicio);
       foraDaJanela = inicio > fecha(janela);
       relogio = inicio + MINUTOS_POR_PARADA * MS_POR_MINUTO;
     }
 
-    paradas.push({ ordem: i + 1, ponto, distanciaDesdeAnteriorKm: km, chegadaPrevista, foraDaJanela });
+    paradas.push({ ordem: i + 1, ponto, distanciaDesdeAnteriorKm: km, chegadaPrevista, coletaPrevista, foraDaJanela });
     atual = ponto;
   });
 
