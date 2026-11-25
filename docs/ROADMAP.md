@@ -29,16 +29,16 @@ impacto validados com parceiros reais**, pronta para apresentação.
 
 ### P1 · Front-end
 - [ ] Revisar telas no celular (a ONG vai usar no carro) e corrigir o que quebrar.
-- [ ] Estados de carregamento e erro nas telas (preparar para chamadas assíncronas ao back-end).
+- [x] Estados de carregamento e erro nas telas (preparar para chamadas assíncronas ao back-end).
 - [ ] Tela "Minhas doações" do estabelecimento (status: disponível / reservada / coletada).
-- [ ] Tornar `useApp()` compatível com dados assíncronos (combinar com P2).
+- [x] Tornar `useApp()` compatível com dados assíncronos (combinar com P2).
 
 ### P2 · Back-end
-- [ ] Escolher Convex ou Supabase (critérios: tempo de setup, tempo real, plano gratuito) — até 18/11.
-- [ ] Criar tabelas/coleções espelhando `lib/types.ts` e um script de seed a partir de `lib/data/*.json`.
-- [ ] Reimplementar `lib/data/index.ts` e as ações de `lib/store.tsx` contra o banco.
+- [x] Escolher Convex ou Supabase: **Supabase**.
+- [x] Criar tabelas espelhando `lib/types.ts` e o seed a partir de `lib/data/*.json` (`supabase/`).
+- [x] Camada de dados contra o banco (`lib/data/repositorio.ts`), com tempo real e modo local de demonstração.
 - [ ] Login simples (magic link ou e-mail/senha) com perfil `estabelecimento` ou `ong`.
-- [ ] Regra de concorrência: duas ONGs não podem reservar a mesma doação.
+- [x] Regra de concorrência: duas ONGs não podem reservar a mesma doação (funções no banco).
 
 ### P3 · Mapas e rotas
 - [ ] Geocodificar o endereço do formulário (Nominatim/OSM; respeitar o limite de 1 req/s) e remover a lista fixa de bairros.
@@ -62,7 +62,7 @@ impacto validados com parceiros reais**, pronta para apresentação.
 - [ ] Polimento visual e textos finais com P4.
 
 ### P2 · Back-end
-- [ ] Confirmação de coleta grava um registro de `Coleta` (usado no painel).
+- [x] Confirmação de coleta grava um registro de `Coleta` (usado no painel).
 - [ ] Expirar automaticamente doações vencidas ou com janela encerrada.
 - [ ] Notificação simples (e-mail) para ONGs próximas quando surgir doação nova.
 - [ ] Deploy na Vercel com variáveis de ambiente configuradas.
