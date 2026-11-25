@@ -8,7 +8,7 @@ import SeletorOng from "@/components/SeletorOng";
 import { getEstabelecimento, getOng } from "@/lib/data";
 import { fmtHora, fmtJanela, fmtKg, fmtNumero } from "@/lib/formato";
 import { calcularImpacto } from "@/lib/impacto";
-import { VELOCIDADE_MEDIA_KMH, sugerirRota } from "@/lib/rota";
+import { type RotaSugerida, VELOCIDADE_MEDIA_KMH, simularTrajeto, sugerirRota } from "@/lib/rota";
 import { useApp } from "@/lib/store";
 
 export default function RotaPage() {
@@ -21,6 +21,15 @@ export default function RotaPage() {
   );
   // Rota calculada a partir da sede da ONG (ver lib/rota.ts).
   const rota = useMemo(() => sugerirRota(ong, reservadas), [ong, reservadas]);
+  // Referência para medir o ganho: buscar na ordem em que as doações foram reservadas.
+  const naOrdemDasReservas = useMemo(
+    () =>
+      simularTrajeto(
+        ong,
+        [...reservadas].sort((a, b) => (a.reservadaEm ?? "").localeCompare(b.reservadaEm ?? "")),
+      ),
+    [ong, reservadas],
+  );
   const coletadasHoje = doacoes.filter((d) => d.status === "coletada" && d.ongId === ongAtualId);
 
   const kgTotal = reservadas.reduce((s, d) => s + d.quantidadeKg, 0);
@@ -73,6 +82,8 @@ export default function RotaPage() {
             <Resumo rotulo="A resgatar" valor={`${fmtKg(kgTotal)} · ~${impactoPrevisto.refeicoes} refeições`} />
           </div>
 
+          {rota.paradas.length > 1 && <Comparacao rota={rota} referencia={naOrdemDasReservas} />}
+
           <div className="grid gap-6 lg:grid-cols-5">
             <div className="h-[360px] lg:col-span-3 lg:h-[560px]">
               <Mapa marcadores={marcadores} linha={linha} />
@@ -123,6 +134,42 @@ export default function RotaPage() {
         </>
       )}
     </>
+  );
+}
+
+/** Compara a rota sugerida com a ordem das reservas: km economizados e janelas salvas. */
+function Comparacao({ rota, referencia }: { rota: RotaSugerida<unknown>; referencia: RotaSugerida<unknown> }) {
+  const economiaKm = referencia.distanciaEstimadaKm - rota.distanciaEstimadaKm;
+  const percentual = referencia.distanciaEstimadaKm > 0 ? (economiaKm / referencia.distanciaEstimadaKm) * 100 : 0;
+  const janelasSalvas = referencia.coletasForaDaJanela - rota.coletasForaDaJanela;
+  // Diferenças abaixo de 100 m são ruído da estimativa.
+  const LIMIAR_KM = 0.1;
+
+  let distancia: string;
+  if (economiaKm > LIMIAR_KM) {
+    distancia = `${fmtNumero(economiaKm)} km a menos (${Math.round(percentual)}%) do que buscar na ordem das reservas.`;
+  } else if (economiaKm < -LIMIAR_KM) {
+    distancia = `${fmtNumero(-economiaKm)} km a mais do que na ordem das reservas, para chegar dentro das janelas.`;
+  } else {
+    distancia = "Mesma distância da ordem das reservas: ela já era uma boa sequência.";
+  }
+
+  return (
+    <div className="mb-6 rounded-xl border border-marca-500 bg-marca-50 p-4 text-sm text-stone-800">
+      <p className="font-semibold text-marca-700">Ganho da rota sugerida</p>
+      <p className="mt-1">{distancia}</p>
+      {janelasSalvas > 0 && (
+        <p className="mt-1">
+          Na ordem das reservas, {janelasSalvas} coleta(s) chegariam depois do fim da janela de retirada.
+        </p>
+      )}
+      {rota.coletasForaDaJanela > 0 && (
+        <p className="mt-2 text-red-700">
+          {rota.coletasForaDaJanela} coleta(s) não cabem na janela mesmo na melhor ordem encontrada. Avalie cancelar
+          a reserva para liberar a doação a outra ONG.
+        </p>
+      )}
+    </div>
   );
 }
 
