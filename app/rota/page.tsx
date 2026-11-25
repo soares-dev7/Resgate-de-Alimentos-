@@ -6,9 +6,9 @@ import Mapa, { COR, type MarcadorMapa } from "@/components/Mapa";
 import PageHeader from "@/components/PageHeader";
 import SeletorOng from "@/components/SeletorOng";
 import { getEstabelecimento, getOng } from "@/lib/data";
-import { fmtJanela, fmtKg, fmtNumero } from "@/lib/formato";
+import { fmtHora, fmtJanela, fmtKg, fmtNumero } from "@/lib/formato";
 import { calcularImpacto } from "@/lib/impacto";
-import { sugerirRota } from "@/lib/rota";
+import { VELOCIDADE_MEDIA_KMH, sugerirRota } from "@/lib/rota";
 import { useApp } from "@/lib/store";
 
 export default function RotaPage() {
@@ -82,7 +82,10 @@ export default function RotaPage() {
               {rota.paradas.map((p) => {
                 const est = getEstabelecimento(p.ponto.estabelecimentoId);
                 return (
-                  <li key={p.ponto.id} className="flex gap-3 rounded-xl border border-stone-200 bg-white p-4">
+                  <li
+                    key={p.ponto.id}
+                    className={`flex gap-3 rounded-xl border bg-white p-4 ${p.foraDaJanela ? "border-red-300" : "border-stone-200"}`}
+                  >
                     <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-marca-600 font-bold text-white">{p.ordem}</span>
                     <div className="flex-1">
                       <h3 className="font-semibold">{est?.nome}</h3>
@@ -90,6 +93,14 @@ export default function RotaPage() {
                       <p className="text-sm text-stone-600">
                         {fmtKg(p.ponto.quantidadeKg)} · janela {fmtJanela(p.ponto.janelaInicio, p.ponto.janelaFim)}
                       </p>
+                      {p.chegadaPrevista && (
+                        <p className="text-sm font-medium text-stone-800">Chegada prevista: {fmtHora(p.chegadaPrevista)}</p>
+                      )}
+                      {p.foraDaJanela && (
+                        <p className="mt-1 rounded-md bg-red-50 px-2 py-1 text-sm text-red-700">
+                          Fora da janela: não dá para chegar antes de {p.ponto.janelaFim.slice(11, 16)}.
+                        </p>
+                      )}
                       <p className="text-xs text-stone-500">+{fmtNumero(p.distanciaDesdeAnteriorKm)} km em linha reta desde a parada anterior</p>
                       <button
                         onClick={() => confirmarColeta(p.ponto.id)}
@@ -105,8 +116,9 @@ export default function RotaPage() {
           </div>
 
           <p className="mt-4 text-xs text-stone-500">
-            Rota calculada pela heurística do vizinho mais próximo em linha reta (×1,3 para estimar o trajeto
-            por ruas). Ainda não considera trânsito nem a ordem das janelas de retirada.
+            Rota calculada pela heurística do vizinho mais próximo respeitando as janelas de retirada, com
+            distâncias em linha reta (×1,3 para estimar o trajeto por ruas) e {VELOCIDADE_MEDIA_KMH} km/h de média.
+            Ainda não considera trânsito real.
           </p>
         </>
       )}
