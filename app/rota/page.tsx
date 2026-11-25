@@ -6,9 +6,9 @@ import Mapa, { COR, type MarcadorMapa } from "@/components/Mapa";
 import PageHeader from "@/components/PageHeader";
 import SeletorOng from "@/components/SeletorOng";
 import { getEstabelecimento, getOng } from "@/lib/data";
-import { fmtJanela, fmtKg, fmtNumero } from "@/lib/formato";
+import { fmtDiaHora, fmtJanela, fmtKg, fmtNumero } from "@/lib/formato";
 import { calcularImpacto } from "@/lib/impacto";
-import { sugerirRota } from "@/lib/rota";
+import { type RotaSugerida, VELOCIDADE_MEDIA_KMH, simularTrajeto, sugerirRota } from "@/lib/rota";
 import { useApp } from "@/lib/store";
 
 export default function RotaPage() {
@@ -21,6 +21,15 @@ export default function RotaPage() {
   );
   // Rota calculada a partir da sede da ONG (ver lib/rota.ts).
   const rota = useMemo(() => sugerirRota(ong, reservadas), [ong, reservadas]);
+  // Referência para medir o ganho: buscar na ordem em que as doações foram reservadas.
+  const naOrdemDasReservas = useMemo(
+    () =>
+      simularTrajeto(
+        ong,
+        [...reservadas].sort((a, b) => (a.reservadaEm ?? "").localeCompare(b.reservadaEm ?? "")),
+      ),
+    [ong, reservadas],
+  );
   const coletadasHoje = doacoes.filter((d) => d.status === "coletada" && d.ongId === ongAtualId);
 
   const kgTotal = reservadas.reduce((s, d) => s + d.quantidadeKg, 0);
@@ -73,6 +82,8 @@ export default function RotaPage() {
             <Resumo rotulo="A resgatar" valor={`${fmtKg(kgTotal)} · ~${impactoPrevisto.refeicoes} refeições`} />
           </div>
 
+          {rota.paradas.length > 1 && <Comparacao rota={rota} referencia={naOrdemDasReservas} />}
+
           <div className="grid gap-6 lg:grid-cols-5">
             <div className="h-[360px] lg:col-span-3 lg:h-[560px]">
               <Mapa marcadores={marcadores} linha={linha} />
@@ -82,7 +93,10 @@ export default function RotaPage() {
               {rota.paradas.map((p) => {
                 const est = getEstabelecimento(p.ponto.estabelecimentoId);
                 return (
-                  <li key={p.ponto.id} className="flex gap-3 rounded-xl border border-stone-200 bg-white p-4">
+                  <li
+                    key={p.ponto.id}
+                    className={`flex gap-3 rounded-xl border bg-white p-4 ${p.foraDaJanela ? "border-red-300" : "border-stone-200"}`}
+                  >
                     <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-marca-600 font-bold text-white">{p.ordem}</span>
                     <div className="flex-1">
                       <h3 className="font-semibold">{est?.nome}</h3>
@@ -90,6 +104,14 @@ export default function RotaPage() {
                       <p className="text-sm text-stone-600">
                         {fmtKg(p.ponto.quantidadeKg)} · janela {fmtJanela(p.ponto.janelaInicio, p.ponto.janelaFim)}
                       </p>
+                      {p.coletaPrevista && (
+                        <p className="text-sm font-medium text-stone-800">Coleta prevista: {fmtDiaHora(p.coletaPrevista)}</p>
+                      )}
+                      {p.foraDaJanela && (
+                        <p className="mt-1 rounded-md bg-red-50 px-2 py-1 text-sm text-red-700">
+                          Fora da janela: não dá para chegar antes de {p.ponto.janelaFim.slice(11, 16)}.
+                        </p>
+                      )}
                       <p className="text-xs text-stone-500">+{fmtNumero(p.distanciaDesdeAnteriorKm)} km em linha reta desde a parada anterior</p>
                       <button
                         onClick={() => confirmarColeta(p.ponto.id)}
@@ -105,12 +127,50 @@ export default function RotaPage() {
           </div>
 
           <p className="mt-4 text-xs text-stone-500">
-            Rota calculada pela heurística do vizinho mais próximo em linha reta (×1,3 para estimar o trajeto
-            por ruas). Ainda não considera trânsito nem a ordem das janelas de retirada.
+            Rota calculada pela heurística do vizinho mais próximo respeitando as janelas de retirada, com
+            distâncias em linha reta (×1,3 para estimar o trajeto por ruas) e {VELOCIDADE_MEDIA_KMH} km/h de média.
+            Ainda não considera trânsito real.
           </p>
         </>
       )}
     </>
+  );
+}
+
+/** Compara a rota sugerida com a ordem das reservas: km economizados e janelas salvas. */
+function Comparacao({ rota, referencia }: { rota: RotaSugerida<unknown>; referencia: RotaSugerida<unknown> }) {
+  const economiaKm = referencia.distanciaEstimadaKm - rota.distanciaEstimadaKm;
+  const percentual = referencia.distanciaEstimadaKm > 0 ? (economiaKm / referencia.distanciaEstimadaKm) * 100 : 0;
+  const janelasSalvas = referencia.coletasForaDaJanela - rota.coletasForaDaJanela;
+  // Diferenças abaixo de 100 m são ruído da estimativa.
+  const LIMIAR_KM = 0.1;
+
+  let distancia: string;
+  if (economiaKm > LIMIAR_KM) {
+    distancia = `${fmtNumero(economiaKm)} km a menos (${Math.round(percentual)}%) do que buscar na ordem das reservas.`;
+  } else if (economiaKm < -LIMIAR_KM) {
+    distancia = `${fmtNumero(-economiaKm)} km a mais do que na ordem das reservas, para chegar dentro das janelas.`;
+  } else {
+    distancia = "Mesma distância da ordem das reservas: ela já era uma boa sequência.";
+  }
+
+  return (
+    <div className="mb-6 rounded-xl border border-marca-500 bg-marca-50 p-4 text-sm text-stone-800">
+      <p className="font-semibold text-marca-700">Ganho da rota sugerida</p>
+      {janelasSalvas > 0 && (
+        <p className="mt-1">
+          Evita {janelasSalvas} coleta(s) fora da janela: na ordem das reservas, elas chegariam depois do fim da
+          janela de retirada.
+        </p>
+      )}
+      <p className="mt-1">{distancia}</p>
+      {rota.coletasForaDaJanela > 0 && (
+        <p className="mt-2 text-red-700">
+          {rota.coletasForaDaJanela} coleta(s) não cabem na janela mesmo na melhor ordem encontrada. Avalie cancelar
+          a reserva para liberar a doação a outra ONG.
+        </p>
+      )}
+    </div>
   );
 }
 

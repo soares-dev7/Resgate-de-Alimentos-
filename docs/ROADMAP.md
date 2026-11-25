@@ -69,9 +69,9 @@ impacto validados com parceiros reais**, pronta para apresentação.
 
 ### P3 · Mapas e rotas
 - [ ] Substituir `sugerirRota` em `lib/rota.ts` pela API real mantendo a assinatura.
-- [ ] Considerar janelas de retirada (ex.: VROOM/ORS Optimization) ou, no mínimo, ordenar por janela + proximidade.
+- [x] Considerar janelas de retirada: heurística janela + proximidade em `lib/rota.ts` (próximo passo: VROOM/ORS Optimization).
 - [ ] Fallback: se a API falhar, usar a heurística atual do vizinho mais próximo.
-- [ ] Medir e mostrar a economia: km da rota sugerida × km visitando na ordem de reserva.
+- [x] Medir e mostrar a economia: km da rota sugerida × km visitando na ordem de reserva.
 
 ### P4 · Conteúdo, painel e validação
 - [ ] Teste de usabilidade com pelo menos 1 estabelecimento e 1 ONG reais; registrar achados em `docs/`.

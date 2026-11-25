@@ -70,8 +70,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         setDoacoes((lista) => [nova, ...lista]);
         return nova;
       },
-      reservar: (id) => atualizar(id, { status: "reservada", ongId: ongAtualId }),
-      cancelarReserva: (id) => atualizar(id, { status: "disponivel", ongId: undefined }),
+      reservar: (id) =>
+        atualizar(id, { status: "reservada", ongId: ongAtualId, reservadaEm: new Date().toISOString() }),
+      cancelarReserva: (id) =>
+        atualizar(id, { status: "disponivel", ongId: undefined, reservadaEm: undefined }),
       confirmarColeta: (id) =>
         atualizar(id, { status: "coletada", coletadaEm: new Date().toISOString() }),
       resetarDemo: () => {

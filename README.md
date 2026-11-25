@@ -53,7 +53,8 @@ O gargalo é **logístico**:
 - 10 estabelecimentos fictícios em bairros reais de São Paulo e 3 ONGs fictícias.
 - Doações iniciais com datas relativas a "hoje" (a demo nunca fica vencida).
 - Estado persistido no `localStorage` do navegador + botão "Reiniciar dados da demo" em `/impacto`.
-- Heurística de rota (vizinho mais próximo) com estimativa de distância e tempo.
+- Rota que respeita as janelas de retirada (vizinho mais próximo no tempo), com horário previsto de cada coleta,
+  alerta de coleta fora da janela e comparação com a ordem das reservas (km e janelas salvas).
 - Fatores de impacto documentados em `lib/impacto.ts`.
 - Layout responsivo (celular e desktop).
 
@@ -62,7 +63,7 @@ O gargalo é **logístico**:
 - Back-end e banco de dados reais (Convex ou Supabase) — hoje tudo é mock.
 - Autenticação e perfis (estabelecimento × ONG); hoje a ONG é escolhida num seletor.
 - Geocodificação do endereço digitado (hoje o ponto no mapa vem do estabelecimento ou do centro do bairro).
-- API de rotas real (distâncias por ruas, trânsito) e respeito às janelas de retirada na otimização.
+- API de rotas real (distâncias por ruas, trânsito) e um solver de VRP com janelas de tempo (ex.: VROOM).
 - Notificações (WhatsApp/e-mail/push) para novas doações e lembretes de retirada.
 - Regras de segurança alimentar (checklist de conservação, temperatura, termo de doação — Lei 14.016/2020).
 - Testes automatizados.
@@ -139,7 +140,7 @@ lib/
     index.ts            # funções de acesso + rótulos + bairros de SP
     *.json              # estabelecimentos, ONGs, doações e histórico de coletas
   store.tsx             # estado global (React Context + localStorage)
-  rota.ts               # heurística do vizinho mais próximo (Haversine)
+  rota.ts               # rota com janelas de retirada (vizinho mais próximo + Haversine)
   impacto.ts            # fatores e cálculo de impacto (estimativas)
   validacao.ts          # regras de validação da doação
   formato.ts            # formatação pt-BR (kg, datas, janelas)
