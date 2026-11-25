@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "leaflet/dist/leaflet.css";
 import "./globals.css";
 import Header from "@/components/Header";
+import AvisoErro from "@/components/AvisoErro";
 import Footer from "@/components/Footer";
 import { AppProvider } from "@/lib/store";
 
@@ -17,7 +18,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body className="flex min-h-screen flex-col antialiased">
         <AppProvider>
           <Header />
-          <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">{children}</main>
+          <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">
+            <AvisoErro />
+            {children}
+          </main>
           <Footer />
         </AppProvider>
       </body>

@@ -14,7 +14,7 @@ import { useApp } from "@/lib/store";
 type Filtro = "disponiveis" | "minhas";
 
 export default function ColetasPage() {
-  const { doacoes, ongAtualId, reservar, cancelarReserva, processando } = useApp();
+  const { doacoes, ongAtualId, reservar, cancelarReserva, processando, carregando } = useApp();
   const [filtro, setFiltro] = useState<Filtro>("disponiveis");
   const [selecionadaId, setSelecionadaId] = useState<string>();
   const ong = getOng(ongAtualId)!;
@@ -83,7 +83,11 @@ export default function ColetasPage() {
         <div className="space-y-3 lg:order-1 lg:col-span-2">
           {lista.length === 0 && (
             <p className="rounded-xl border border-dashed border-stone-300 p-6 text-center text-stone-500">
-              {filtro === "disponiveis" ? "Nenhuma doação disponível agora." : "Você ainda não reservou nenhuma doação."}
+              {carregando
+                ? "Carregando doações…"
+                : filtro === "disponiveis"
+                  ? "Nenhuma doação disponível agora."
+                  : "Você ainda não reservou nenhuma doação."}
             </p>
           )}
           {lista.map(({ doacao, distancia }) => (

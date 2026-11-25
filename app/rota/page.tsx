@@ -12,7 +12,7 @@ import { type RotaSugerida, VELOCIDADE_MEDIA_KMH, simularTrajeto, sugerirRota } 
 import { useApp } from "@/lib/store";
 
 export default function RotaPage() {
-  const { doacoes, ongAtualId, confirmarColeta, processando } = useApp();
+  const { doacoes, ongAtualId, confirmarColeta, processando, carregando } = useApp();
   const ong = getOng(ongAtualId)!;
 
   const reservadas = useMemo(
@@ -63,7 +63,9 @@ export default function RotaPage() {
         <SeletorOng />
       </PageHeader>
 
-      {reservadas.length === 0 ? (
+      {carregando ? (
+        <p className="rounded-2xl border border-dashed border-stone-300 p-10 text-center text-stone-500">Carregando reservas…</p>
+      ) : reservadas.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-stone-300 p-10 text-center">
           <p className="text-stone-600">Nenhuma doação reservada para montar a rota.</p>
           {coletadasHoje.length > 0 && (

@@ -9,7 +9,7 @@ import { useApp } from "@/lib/store";
 
 export default function ImpactoPage() {
   // Coletas concluídas: histórico + as confirmadas em /rota (ver lib/data/repositorio.ts).
-  const { coletas, resetarDemo } = useApp();
+  const { coletas, resetarDemo, carregando } = useApp();
 
   const total = resumir(coletas);
   const porSemana = agruparPor(coletas, (c) => inicioDaSemana(c.data))
@@ -27,6 +27,8 @@ export default function ImpactoPage() {
           </button>
         )}
       </PageHeader>
+
+      {carregando && <p className="mb-4 text-sm text-stone-500">Carregando dados de impacto…</p>}
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         <Destaque rotulo="Alimento resgatado" valor={fmtKg(total.kg)} />
